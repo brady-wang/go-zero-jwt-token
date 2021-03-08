@@ -1,0 +1,40 @@
+type (
+	LoginReq {
+		Username string `form:"username"`
+		Password string `form:"password"`
+	}
+
+	LoginReply {
+		Id           int64  `json:"id"`
+		Name         string `json:"name"`
+		Gender       string `json:"gender"`
+		AccessToken  string `json:"accessToken"`
+		AccessExpire int64  `json:"accessExpire"`
+		RefreshAfter int64  `json:"refreshAfter"`
+	}
+)
+
+type (
+	SearchReq {
+		// 图书名称
+		Name string `form:"name"`
+	}
+
+	SearchReply {
+		Name string `json:"name"`
+	}
+)
+
+service user-api {
+	@handler login
+	get /user/login (LoginReq) returns (LoginReply)
+}
+
+@server(
+	//jwt: Auth
+	middleware : Example
+)
+service user-api {
+	@handler getUserInfo
+	get /info (SearchReq) returns (SearchReply)
+}
